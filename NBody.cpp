@@ -1,30 +1,37 @@
 #include <SFML/Graphics.hpp>
-#include <fstream>
 #include <string>
-#include <cstdio>
+#include <vector>
 #include <iostream>
-#include <sstream>
+//#include <sstream>
 #include "Body.hpp"
 
-int main(int argc, char* argv[]) // read time and delta_time
+const int TIME_ARG = 1;
+const int DELTA_TIME_ARG = 2;
+
+int main(int argc, char* argv[])
 {
-	std::string data;
-	
 	int n_bodies;				// N 
 	double universe_radius;		// R
-	double time;				// T - argv[1]
-	double delta_time;			// t - argv[2]
-	
-	std::getline(std::cin, data);
-	std::istringstream(data) >> n_bodies;	
-	std::getline(std::cin, data);
-	std::istringstream(data) >> universe_radius;
-	std::istringstream(argv[1]) >> time;
-	std::istringstream(argv[2]) >> delta_time;
 
+	double xpos, ypos, xvel, yvel, mass;
+	std::string filename;
+
+	std::vector<Body> solar_system;
+//	solar_system.reserve(n_bodies);
+
+	std::cin >> n_bodies;
 	std::cout << "Number of bodies: " << n_bodies << std::endl;
+	
+	std::cin >> universe_radius;
 	std::cout << "Universe radius: " << universe_radius << std::endl;
 
+	for (int i = 0; i < n_bodies; ++i)
+	{
+		std::cin >> xpos >>	ypos >> xvel >> yvel >> mass;
+		std::cin >> filename;
+		solar_system.push_back(Body(xpos, ypos, xvel, yvel, mass, filename));
+		std::cout << solar_system[i] << std::endl;
+	}
 
 	// ======================================================================== SFML
 
