@@ -10,27 +10,29 @@ const int DELTA_TIME_ARG = 2;
 
 int main(int argc, char* argv[])
 {
-	int n_bodies;				// N 
-	double universe_radius;		// R
-
+	int n_bodies;				 
+	double universe_radius;	
+	std::vector<Body> solar_system;
 	double xpos, ypos, xvel, yvel, mass;
 	std::string filename;
 
-	std::vector<Body> solar_system;
-//	solar_system.reserve(n_bodies);
-
 	std::cin >> n_bodies;
-	std::cout << "Number of bodies: " << n_bodies << std::endl;
-	
+	std::cout << std::endl << "Number of bodies: " << n_bodies << std::endl;
 	std::cin >> universe_radius;
 	std::cout << "Universe radius: " << universe_radius << std::endl;
+	std::cout << std::endl;
+	std::cout << " ...xpos... ...ypos... ...xvel... ...yvel... ...mass... filename";
+	std::cout << std::endl << std::endl;
 
 	for (int i = 0; i < n_bodies; ++i)
 	{
 		std::cin >> xpos >>	ypos >> xvel >> yvel >> mass;
 		std::cin >> filename;
+		
 		solar_system.push_back(Body(xpos, ypos, xvel, yvel, mass, filename));
-		std::cout << solar_system[i] << std::endl;
+		
+		std::cout.precision(4);
+		std::cout << std::scientific << solar_system[i] << std::endl;
 	}
 
 	// ======================================================================== SFML
@@ -41,9 +43,6 @@ int main(int argc, char* argv[])
 	while (window.isOpen())
 	{
 		sf::Event event;
-
-		// Create instances of Body for each planet
-	//	Body sun;
 
 		while (window.pollEvent(event))
 		{
