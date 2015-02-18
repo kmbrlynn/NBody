@@ -21,9 +21,20 @@ void Body::set_texture(std::string texture_name)
 	_sprite.setTexture(_texture);
 }
 
+void Body::set_sprite(sf::Sprite sprite)
+{
+	_sprite = sprite;
+}
+
+sf::Sprite Body::get_sprite()
+{
+	return _sprite;
+}
+
+// ======================================================== position, velocity, mass
 void Body::set_xpos(double xpos)
 {
-
+	// need a translation function
 }
 
 void Body::set_ypos(double ypos)

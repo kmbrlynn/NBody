@@ -5,34 +5,42 @@
 //#include <sstream>
 #include "Body.hpp"
 
-const int TIME_ARG = 1;
-const int DELTA_TIME_ARG = 2;
-
 int main(int argc, char* argv[])
 {
 	int n_bodies;				 
 	double universe_radius;	
-	std::vector<Body> solar_system;
+	
 	double xpos, ypos, xvel, yvel, mass;
 	std::string filename;
+
+	std::vector<Body> bodies;
 
 	std::cin >> n_bodies;
 	std::cout << std::endl << "Number of bodies: " << n_bodies << std::endl;
 	std::cin >> universe_radius;
 	std::cout << "Universe radius: " << universe_radius << std::endl;
 	std::cout << std::endl;
-	std::cout << " ...xpos... ...ypos... ...xvel... ...yvel... ...mass... filename";
+	std::cout << " ...xpos...  ...ypos...  ...xvel...  ...yvel...  ...mass...  filename";
 	std::cout << std::endl << std::endl;
 
 	for (int i = 0; i < n_bodies; ++i)
-	{
-		std::cin >> xpos >>	ypos >> xvel >> yvel >> mass;
-		std::cin >> filename;
+	{	
+		// CHANGE THIS LATER
+		// overload istream for whole line instead of doing it value by value
+		std::cin >> xpos >>	ypos >> xvel >> yvel >> mass >> filename;
 		
-		solar_system.push_back(Body(xpos, ypos, xvel, yvel, mass, filename));
+		// construct a body
+		bodies.push_back(Body(xpos, ypos, xvel, yvel, mass, filename));
 		
+		// give its sprite a texture
+		bodies.back().set_texture(filename);
+
+		// set its initial position
+		bodies.back().get_sprite().setPosition(xpos, ypos);
+		
+		// print info to console
 		std::cout.precision(4);
-		std::cout << std::scientific << solar_system[i] << std::endl;
+		std::cout << std::scientific << bodies[i] << std::endl;
 	}
 
 	// ======================================================================== SFML
@@ -51,7 +59,13 @@ int main(int argc, char* argv[])
 		}
 
 		window.clear(sf::Color::White);
-	//	window.draw(sun);
+
+		for (int i = 0; i < n_bodies; ++i)
+		{
+		//	window.draw(i
+			
+		}
+
 		window.display();
 	}
 

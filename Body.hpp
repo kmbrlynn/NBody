@@ -12,6 +12,9 @@ public:
 	~Body();
 
 	void set_texture(std::string);
+	void set_sprite(sf::Sprite);
+
+	sf::Sprite get_sprite();
 
 	void set_xpos(double);
 	void set_ypos(double);
