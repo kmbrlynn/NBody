@@ -5,6 +5,11 @@ all: NBody
 
 NBody: NBody.o Body.o
 	$(CC) $(CFLAGS) -o NBody NBody.o Body.o -lsfml-graphics -lsfml-window -lsfml-system
+
+Nbody: Nbody.o Body.o
+	$(CC) $(CFLAGS) -o NBody NBody.o Body.o -lsfml-system -lsfml-window -lsfml-graphics
+
+
 NBody.o: NBody.cpp Body.cpp Body.hpp
 	$(CC) $(CFLAGS) -c NBody.cpp
 
