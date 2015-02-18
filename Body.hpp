@@ -11,6 +11,14 @@ public:
 	Body();
 	~Body();
 
+	void set_texture(std::string);
+
+	void set_xpos(double);
+	void set_ypos(double);
+
+	double get_xpos();
+	double get_ypos();
+
 	friend std::ostream& operator <<(std::ostream&, const Body&);
 	friend std::istream& operator >>(std::istream&, Body&);
 
