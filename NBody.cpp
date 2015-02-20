@@ -2,14 +2,16 @@
 #include <string>
 #include <vector>
 #include <iostream>
-//#include <sstream>
 #include "Body.hpp"
+
+const int SIZE = 800;
 
 int main(int argc, char* argv[])
 {
+	double universe_radius;
+	int window_size = SIZE;
+
 	int n_bodies;				 
-	double universe_radius;	
-	
 	std::vector<Body> bodies;
 
 	std::cin >> n_bodies;
@@ -20,24 +22,23 @@ int main(int argc, char* argv[])
 	std::cout << " ...xpos...  ...ypos...  ...xvel...  ...yvel...  ...mass...  filename";
 	std::cout << std::endl << std::endl;
 
-	for (int i = 0; i < n_bodies; ++i)
+	for (int i = 0; i < n_bodies-3; ++i)
 	{	
-		Body body;
-	//	std::cin >> body;
+		Body body(universe_radius, window_size);
 		bodies.push_back(body);
 
-		// construct a body
-//		bodies.push_back(Body(xpos, ypos, xvel, yvel, mass, filename));
-				
-		// print info to console
 		std::cout.precision(4);
 		std::cout << std::scientific << bodies[i] << std::endl;
 	}
 
+//	std::cout << std::endl << bodies[2] << std::endl;
+
 	// ======================================================================== SFML
 
-	sf::RenderWindow window(sf::VideoMode(800, 800), "N-Body Simulation");
+	sf::RenderWindow window(sf::VideoMode(SIZE, SIZE), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
+
+	Body testBody(universe_radius, window_size);
 
 	while (window.isOpen())
 	{
@@ -51,16 +52,35 @@ int main(int argc, char* argv[])
 
 		window.clear(sf::Color::White);
 
-		for (int i = 0; i < n_bodies; ++i)
+/*		std::vector<Body>::iterator it;
+		for(it = bodies.begin(); it != bodies.end(); ++it)
 		{
-		//	window.draw(i
-			
+			window.draw(*it);
 		}
+*/	
 
+		window.draw(testBody);
+
+/*		for(unsigned int i = 0; i < bodies.size(); i++)
+		{
+			window.draw(bodies.at(i));
+		}
+*/
 		window.display();
 	}
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 

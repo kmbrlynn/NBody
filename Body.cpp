@@ -3,38 +3,47 @@
 #include <iostream>
 
 // ================================================================= con/destructors
-Body::Body()
+Body::Body(double univ_radius, int window_size) :
+		   _radius(univ_radius), _size(window_size)
 {
 	// _xpos, _ypos, _xvel, _yvel, _mass, _filename
 	std::cin >> *this;
-	// _texture, _sprite
+
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
+
+	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
 }
 
 Body::~Body()
 {}
 
-// ======================================================== position, velocity, mass
-void Body::set_xvel(double xvel)
+// ============================================================ accessors / mutators
+sf::Sprite Body::get_sprite()
 {
-	// need a translation function
+	return _sprite;
 }
 
-void Body::set_yvel(double yvel)
+// ======================================================= convert universe / window
+void Body::polar_to_cartesian()
 {
-	// need a translation function
+	// create a cartesian origin in center of window
+//	double cartesian_origin_x = _size / 2;
+//	double cartesian_origin_y = _size / 2;
+
+	// s
+
 }
 
 // ====================================================================== overridden
 void Body::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-
-
+	target.draw(_sprite, states);
+	
 }
 
 std::istream& operator >>(std::istream& in_stream, Body& body)
-{	
+{
 	in_stream >> body._xpos;
 	in_stream >> body._ypos;
 	in_stream >> body._xvel;
@@ -56,5 +65,4 @@ std::ostream& operator <<(std::ostream& out_stream, const Body& body)
 
 	return out_stream;
 }
-
 
