@@ -30,14 +30,10 @@ int main(int argc, char* argv[])
 		std::cout << std::scientific << *bodies[i] << std::endl;
 	}
 
-//	std::cout << std::endl << bodies[2] << std::endl;
-
 	// ======================================================================== SFML
 
 	sf::RenderWindow window(sf::VideoMode(SIZE, SIZE), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
-
-//	Body testBody(universe_radius, window_size);
 
 	while (window.isOpen())
 	{
@@ -51,21 +47,12 @@ int main(int argc, char* argv[])
 
 		window.clear(sf::Color::White);
 
-/*		std::vector<Body>::iterator it;
+		std::vector<Body*>::iterator it;
 		for(it = bodies.begin(); it != bodies.end(); ++it)
 		{
-			window.draw(*it);
+			window.draw(**it);
 		}
-*/	
-
-//		window.draw(bodies[1]);
-//		window.draw(testBody);
-
-		for(unsigned int i = 0; i < bodies.size(); i++)
-		{
-			window.draw(*bodies[i]);
-		}
-
+	
 		window.display();
 	}
 
