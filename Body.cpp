@@ -2,54 +2,28 @@
 #include "Body.hpp"
 #include <iostream>
 
-Body::Body(double xpos, double ypos, double xvel, double yvel, 
-	       double mass, std::string filename) :
-						_xpos(xpos), _ypos(ypos), _xvel(xvel), _yvel(yvel), 
-						_mass(mass), _filename(filename)
-{}
-
+// ================================================================= con/destructors
 Body::Body()
-{}
+{
+	// _xpos, _ypos, _xvel, _yvel, _mass, _filename
+	std::cin >> *this;
+	// _texture, _sprite
+	_texture.loadFromFile(_filename);
+	_sprite.setTexture(_texture);
+}
 
 Body::~Body()
 {}
 
-// =============================================================== getters & setters
-void Body::set_texture(std::string texture_name)
-{
-	_texture.loadFromFile(texture_name);
-	_sprite.setTexture(_texture);
-}
-
-void Body::set_sprite(sf::Sprite sprite)
-{
-	_sprite = sprite;
-}
-
-sf::Sprite Body::get_sprite()
-{
-	return _sprite;
-}
-
 // ======================================================== position, velocity, mass
-void Body::set_xpos(double xpos)
+void Body::set_xvel(double xvel)
 {
 	// need a translation function
 }
 
-void Body::set_ypos(double ypos)
+void Body::set_yvel(double yvel)
 {
-
-}
-
-double Body::get_xpos()
-{
-	return _xpos;
-}
-
-double Body::get_ypos()
-{
-	return _ypos;
+	// need a translation function
 }
 
 // ====================================================================== overridden
@@ -61,13 +35,13 @@ void Body::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 std::istream& operator >>(std::istream& in_stream, Body& body)
 {	
-/*	in_stream >> body._xpos;
+	in_stream >> body._xpos;
 	in_stream >> body._ypos;
 	in_stream >> body._xvel;
 	in_stream >> body._yvel;
 	in_stream >> body._mass;
 	in_stream >> body._filename;
-*/
+
 	return in_stream;
 }
 

@@ -10,9 +10,6 @@ int main(int argc, char* argv[])
 	int n_bodies;				 
 	double universe_radius;	
 	
-	double xpos, ypos, xvel, yvel, mass;
-	std::string filename;
-
 	std::vector<Body> bodies;
 
 	std::cin >> n_bodies;
@@ -25,19 +22,13 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < n_bodies; ++i)
 	{	
-		// CHANGE THIS LATER
-		// overload istream for whole line instead of doing it value by value
-		std::cin >> xpos >>	ypos >> xvel >> yvel >> mass >> filename;
-		
-		// construct a body
-		bodies.push_back(Body(xpos, ypos, xvel, yvel, mass, filename));
-		
-		// give its sprite a texture
-		bodies.back().set_texture(filename);
+		Body body;
+	//	std::cin >> body;
+		bodies.push_back(body);
 
-		// set its initial position
-		bodies.back().get_sprite().setPosition(xpos, ypos);
-		
+		// construct a body
+//		bodies.push_back(Body(xpos, ypos, xvel, yvel, mass, filename));
+				
 		// print info to console
 		std::cout.precision(4);
 		std::cout << std::scientific << bodies[i] << std::endl;
