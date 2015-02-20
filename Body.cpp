@@ -6,13 +6,14 @@
 Body::Body(double univ_radius, int window_size) :
 		   _radius(univ_radius), _size(window_size)
 {
+
 	// _xpos, _ypos, _xvel, _yvel, _mass, _filename
 	std::cin >> *this;
-
+	
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
-
 	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
+	
 }
 
 Body::~Body()
@@ -38,7 +39,7 @@ void Body::polar_to_cartesian()
 // ====================================================================== overridden
 void Body::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(_sprite, states);
+target.draw(_sprite, states);
 	
 }
 

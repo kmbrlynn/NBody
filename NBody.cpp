@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	int window_size = SIZE;
 
 	int n_bodies;				 
-	std::vector<Body> bodies;
+	std::vector<Body*> bodies;
 
 	std::cin >> n_bodies;
 	std::cout << std::endl << "Number of bodies: " << n_bodies << std::endl;
@@ -22,13 +22,12 @@ int main(int argc, char* argv[])
 	std::cout << " ...xpos...  ...ypos...  ...xvel...  ...yvel...  ...mass...  filename";
 	std::cout << std::endl << std::endl;
 
-	for (int i = 0; i < n_bodies-3; ++i)
+	for (int i = 0; i < n_bodies; ++i)
 	{	
-		Body body(universe_radius, window_size);
-		bodies.push_back(body);
+		bodies.push_back(new Body(universe_radius, window_size));
 
 		std::cout.precision(4);
-		std::cout << std::scientific << bodies[i] << std::endl;
+		std::cout << std::scientific << *bodies[i] << std::endl;
 	}
 
 //	std::cout << std::endl << bodies[2] << std::endl;
@@ -38,7 +37,7 @@ int main(int argc, char* argv[])
 	sf::RenderWindow window(sf::VideoMode(SIZE, SIZE), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
 
-	Body testBody(universe_radius, window_size);
+//	Body testBody(universe_radius, window_size);
 
 	while (window.isOpen())
 	{
@@ -59,13 +58,14 @@ int main(int argc, char* argv[])
 		}
 */	
 
-		window.draw(testBody);
+//		window.draw(bodies[1]);
+//		window.draw(testBody);
 
-/*		for(unsigned int i = 0; i < bodies.size(); i++)
+		for(unsigned int i = 0; i < bodies.size(); i++)
 		{
-			window.draw(bodies.at(i));
+			window.draw(*bodies[i]);
 		}
-*/
+
 		window.display();
 	}
 
