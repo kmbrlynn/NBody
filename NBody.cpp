@@ -4,12 +4,14 @@
 #include <iostream>
 #include "Body.hpp"
 
-const int SIZE = 800;
-
 int main(int argc, char* argv[])
 {
+	sf::Texture starfield;
+	starfield.loadFromFile("starfield.jpg"); //error check this
+	sf::Vector2u size_starfield = starfield.getSize();
+
+	int window_size = (int)size_starfield.x;
 	double universe_radius;
-	int window_size = SIZE;
 
 	int n_bodies;				 
 	std::vector<Body*> bodies;
@@ -32,8 +34,11 @@ int main(int argc, char* argv[])
 
 	// ======================================================================== SFML
 
-	sf::RenderWindow window(sf::VideoMode(SIZE, SIZE), "N-Body Simulation");
+	sf::RenderWindow window(sf::VideoMode(window_size, window_size), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
+
+	sf::Sprite background;
+	background.setTexture(starfield);
 
 	while (window.isOpen())
 	{
@@ -45,7 +50,8 @@ int main(int argc, char* argv[])
 				window.close();
 		}
 
-		window.clear(sf::Color::White);
+		window.clear();
+		window.draw(background);
 
 		std::vector<Body*>::iterator it;
 		for(it = bodies.begin(); it != bodies.end(); ++it)
