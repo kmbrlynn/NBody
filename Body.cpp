@@ -6,33 +6,38 @@
 Body::Body(double univ_radius, int window_size) :
 		   _radius(univ_radius), _size(window_size)
 {
-
 	// _xpos, _ypos, _xvel, _yvel, _mass, _filename
+	// ERROR CHECK THIS
 	std::cin >> *this;
-	
+
+	universe_to_window();
+
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
 	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
-	
 }
 
 Body::~Body()
 {}
 
 // ============================================================ accessors / mutators
-sf::Sprite Body::get_sprite()
+void Body::universe_to_window()
 {
-	return _sprite;
-}
+	// determine meters per pixel
+	double univ_size = _radius * 2;
+	double meters_per_pixel = univ_size / _size;
 
-// ======================================================= convert universe / window
-void Body::polar_to_cartesian()
-{
-	// create a cartesian origin in center of window
-//	double cartesian_origin_x = _size / 2;
-//	double cartesian_origin_y = _size / 2;
+	// scale down the x and y positions
+	_xpos = _xpos / meters_per_pixel;
+	_ypos = _ypos / meters_per_pixel;
 
-	// s
+	// set an origin in center of window
+	double _xorigin = _size / 2;
+	double _yorigin = _size / 2;
+
+	// shift from upper left corner to new origin
+	_xpos += _xorigin;
+	_ypos += _yorigin;
 
 }
 

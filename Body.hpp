@@ -12,15 +12,13 @@ public:
 	~Body();
 
 	// ================================================= accessors / mutators
-	sf::Sprite get_sprite();
+	void universe_to_window();
 
 	// ====================================================== overloaded i/o
 	friend std::ostream& operator <<(std::ostream&, const Body&);
 	friend std::istream& operator >>(std::istream&, Body&);
 
 private:
-	
-	void polar_to_cartesian();
 	
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
