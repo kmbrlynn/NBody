@@ -7,7 +7,15 @@
 int main(int argc, char* argv[])
 {
 	sf::Texture starfield;
-	starfield.loadFromFile("starfield.jpg"); //error check this
+	starfield.loadFromFile("starfield.jpg");
+	
+	if (!starfield.loadFromFile("starfield.jpg"))
+	{
+		std::cout << std::endl << "Cannot find solar system background image.";
+		std::cout << std::endl << "Aborting program." << std::endl << std::endl;
+		return -1;
+	}
+	
 	sf::Vector2u size_starfield = starfield.getSize();
 
 	int window_size = (int)size_starfield.x;
@@ -64,16 +72,6 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
