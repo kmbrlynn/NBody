@@ -7,10 +7,9 @@ Body::Body(double univ_radius, int window_size) :
 		   _radius(univ_radius), _size(window_size)
 {
 	// _xpos, _ypos, _xvel, _yvel, _mass, _filename
-	// ERROR CHECK THIS
 	std::cin >> *this;
 
-	universe_to_window();
+	meters_to_pixels();
 
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
@@ -20,8 +19,8 @@ Body::Body(double univ_radius, int window_size) :
 Body::~Body()
 {}
 
-// ============================================================ accessors / mutators
-void Body::universe_to_window()
+// ======================================================== scale universe to window
+void Body::meters_to_pixels()
 {
 	// determine meters per pixel
 	double univ_size = _radius * 2;

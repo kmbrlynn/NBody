@@ -1,5 +1,8 @@
 #include <SFML/Graphics.hpp>
 
+class CannotLoadBackgroundImage
+{};
+
 class Body: public sf::Drawable
 {
 public:
@@ -17,14 +20,14 @@ public:
 
 private:
 
-	// meters to pixels conversion occurs in constructor
-	void universe_to_window();
+	// scale the universe to the window size. occurs in constructor
+	void meters_to_pixels();
 
 	// sfml's abstract sf::Drawable class is private
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	double _radius;	// millions of meters
-	int _size;		// hundreds of pixels
+	double _radius;	// millions of meters in the universe
+	int _size;		// hundreds of pixels in the window
 
 	double _xpos;
 	double _ypos;	
