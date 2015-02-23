@@ -17,13 +17,16 @@ Body::Body(double univ_radius, int window_size) :
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
 	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
-	_num_bodies++;
+
+	//_num_bodies++;
 }
 
 Body::~Body()
-{}
+{
+	//_num_bodies--;
+}
 
-// ======================================================================= accessors
+// ============================================================ accessors / mutators
 const double Body::get_xpos()
 {
 	return _xpos;
@@ -39,7 +42,18 @@ const double Body::get_mass()
 	return _mass;
 }
 
-const sf::Vector2f Body::get_force(Body& body2)
+void Body::set_xvel(double seconds, double accel)
+{
+	_xvel = _xvel + (seconds * accel);
+}
+
+void Body::set_yvel(double seconds, double accel)
+{
+	_yvel = _yvel + (seconds * accel);
+}
+
+// ======================================================= force / step calculations
+const sf::Vector2f Body::force(Body& body2)
 {
 	// gravitational constant
 	double G = 6.67e-11;
@@ -61,91 +75,27 @@ const sf::Vector2f Body::get_force(Body& body2)
 	sf::Vector2f force(xF, yF);
 	return force;
 }
-/*
-const double Body::get_yForce(Body& body2)
-{
-	// get the masses of the two bodies
-	double m1 = _mass;
-	double m2 = body.get_mass();
 
-	// get distance between them
-	double delta_x = _xpos - body2.get_xpos();
-	double delta_y = _ypos - body2.get_ypos();		
-	double distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
-
-	// calculate the gravitational attraction of x and y components
-	double F = (G * m1 * m2) / (distance * distance); 	
-	double yF = F * (delty_y / distance);
-
-	return yF;
-}
-*/
-
-
-
-// ======================================================================== mutators
-void Body::set_xvel()
-{
-	// calculate this at time t given the current net force
-}
-
-void Body::set_yvel()
-{
-
-}
-
-// ============================================================================ step
 void Body::step(double seconds, std::vector<Body*> bodies)
 {
-	// F = force of gravitational attraction between two bodies
-	//   = (G * mass1 * mass2) / (square of their distance) 
-	
-	// xF = force of attraction for their x component
-	//    = F * (x distance / overall distance)	
-	
-	// yF = force of attraction for their y component
-
-	//    = F * (y distance / overall distance)
-
-	// gravitational constant
-	double G = 6.67e-11;
-
 	std::vector<Body*>::iterator it;
 	for (it = bodies.begin(); it != bodies.end(); ++it)
 	{
-		sf::Vector2f force = get_force(**it);
+		// determine force between 2 bodies
+		sf::Vector2f F = force(**it);
 		
-
-/*		// get the masses of the two bodies
-		double m1 = _mass;
-		double m2 = (**it).get_mass();
-
-		// get distance between them
-		double delta_x = _xpos - (**it).get_xpos();
-		double delta_y = _ypos - (**it).get_ypos();		
-		double distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
-
-		// calculate the gravitational attraction of x and y components
-		double F = (G * m1 * m2) / (distance * distance); 	
-		double xF = F * (delta_x / distance);
-		double yF = F * (delty_y / distance);
-
-		// calculate x and y accelerations for each body
-		double x_accel_body1 = xF / m1;
-		double y_accel_body1 = yF / m1;
-		double x_accel_body2 = xF / m2;
-		double y_accel_body2 = yF / m2;
-*/
-		// update the velocities of each body
-			 
-
-
-
-
-
+		// determine their accelarations
+		double body1_accel_x = F.x / _mass;
+		double body1_accel_y = F.y / _mass;	
+		double body2_accel_x = F.x / (**it).get_mass();
+		double body2_accel_y = F.y / (**it).get_mass();
+	
+		// update their velocities
+		this-> set_xvel(seconds, body1_accel_x);
+		this-> set_yvel(seconds, body1_accel_y);
+		(**it).set_xvel(seconds, body2_accel_x);
+		(**it).set_xvel(seconds, body2_accel_y);
 	}
-
-
 }
 
 // ======================================================== scale universe to window
