@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Body.hpp"
+#include <cmath>
 #include <iostream>
 
 
@@ -41,7 +42,7 @@ const double Body::get_mass()
 // ======================================================================== mutators
 void Body::set_xvel()
 {
-
+	// calculate this at time t given the current net force
 }
 
 void Body::set_yvel()
@@ -50,14 +51,51 @@ void Body::set_yvel()
 
 }
 
-void Body::step(double seconds)
+void Body::step(double seconds, std::vector<Body*> bodies)	//call this in main, on Sun probably
 {
-	// net Force of x
-	// net Force of y
+	// F = force of gravitational attraction between two bodies
+	// xF = force of attraction for their x
+	// yF = force of attraction for their y component
+	// G = gravitational constant, 6.67e-11
 
-	// accel of x
-	// accel of y
+	// F = (G * mass1 * mass2) / (square of their distance) 
+	// xF = (G * mass1 * mass2) / (square of their distance) * (
+	
 
+	// gravitational constant
+	double G = 6.67e-11;
+
+
+	std::vector<Body*>::iterator it;
+	for (it = bodies.begin(); it != bodies.end(); ++it)
+	{
+		// get the masses of the two bodies
+		double m1 = _mass;
+		double m2 = (**it).get_mass();
+
+		// get distance between them
+		double delta_x = _xpos - (**it).get_xpos();
+		double delta_y = _ypos - (**it).get_ypos();		
+		double r = sqrt( (delta_x*delta_x) +(delta_y*delta_y) );
+
+		double F = (G * m1 * m2) / (r*r); 	
+
+	}
+
+
+
+	/* for each item in vector<Body>, 
+
+	 get net force between this body and current body, update both accordingly
+	 Force units = Newtons = (kilograms * meters) / seconds^2
+	double
+	
+
+	 	get acceleration of this body and current body, update both accordingly
+
+
+
+	*/
 
 }
 

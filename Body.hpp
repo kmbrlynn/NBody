@@ -15,10 +15,10 @@ public:
 	const double get_xpos();
 	const double get_ypos();
 	const double get_mass();
-	
+
 	void set_xvel();
 	void set_yvel();
-	void step(double seconds);
+	void step(double seconds, std::vector<Body*>);
 
 	// ====================================================== overloaded i/o
 	friend std::ostream& operator <<(std::ostream&, const Body&);
