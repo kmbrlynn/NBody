@@ -12,10 +12,15 @@ public:
 	~Body();
 
 	// ==================================================== accessors / mutators
-	const double get_xpos();
-	const double get_ypos();
 	const double get_mass();
 
+	const double get_xpos();
+	const double get_ypos();
+	const double get_xvel();
+	const double get_yvel();
+
+	void set_xpos(double, double);
+	void set_ypos(double, double);
 	void set_xvel(double, double);
 	void set_yvel(double, double);
 

@@ -26,7 +26,12 @@ Body::~Body()
 	//_num_bodies--;
 }
 
-// ============================================================ accessors / mutators
+// ======================================================================= accessors
+const double Body::get_mass()
+{
+	return _mass;
+}
+
 const double Body::get_xpos()
 {
 	return _xpos;
@@ -37,9 +42,25 @@ const double Body::get_ypos()
 	return _ypos;
 }
 
-const double Body::get_mass()
+const double Body::get_xvel()
 {
-	return _mass;
+	return _xvel;
+}
+
+const double Body::get_yvel()
+{
+	return _yvel;
+}
+
+// ======================================================================== mutators
+void Body::set_xpos(double seconds, double veloc)
+{
+	_xpos = _xpos + (seconds * veloc);
+}
+
+void Body::set_ypos(double seconds, double veloc)
+{
+	_ypos = _ypos + (seconds * veloc);
 }
 
 void Body::set_xvel(double seconds, double accel)
@@ -52,7 +73,7 @@ void Body::set_yvel(double seconds, double accel)
 	_yvel = _yvel + (seconds * accel);
 }
 
-// ======================================================= force / step calculations
+// ================================================================= calculate force
 const sf::Vector2f Body::force(Body& body2)
 {
 	// gravitational constant
@@ -76,6 +97,7 @@ const sf::Vector2f Body::force(Body& body2)
 	return force;
 }
 
+// ============================================================================ step
 void Body::step(double seconds, std::vector<Body*> bodies)
 {
 	std::vector<Body*>::iterator it;
@@ -84,17 +106,25 @@ void Body::step(double seconds, std::vector<Body*> bodies)
 		// determine force between 2 bodies
 		sf::Vector2f F = force(**it);
 		
-		// determine their accelarations
+		// determine their accelerations
 		double body1_accel_x = F.x / _mass;
 		double body1_accel_y = F.y / _mass;	
-		double body2_accel_x = F.x / (**it).get_mass();
-		double body2_accel_y = F.y / (**it).get_mass();
+	//	double body2_accel_x = F.x / (**it).get_mass();
+	//	double body2_accel_y = F.y / (**it).get_mass();
 	
 		// update their velocities
 		this-> set_xvel(seconds, body1_accel_x);
 		this-> set_yvel(seconds, body1_accel_y);
-		(**it).set_xvel(seconds, body2_accel_x);
-		(**it).set_xvel(seconds, body2_accel_y);
+	//	(**it).set_xvel(seconds, body2_accel_x);
+	//	(**it).set_xvel(seconds, body2_accel_y);
+
+		// update their positions
+		this-> set_xpos(seconds, _xvel);
+		this-> set_ypos(seconds, _yvel);
+	//	(**it).set_xpos(seconds, (**it).get_xvel());
+	//	(**it).set_xpos(seconds, (**it).get_yvel());
+
+
 	}
 }
 
