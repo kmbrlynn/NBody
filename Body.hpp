@@ -7,20 +7,26 @@ class Body: public sf::Drawable
 {
 public:
 	
-	// ==================================================== con / destructors
+	// ======================================================= con / destructors
 	Body(double, int);
 	~Body();
 
-	// ================================================= accessors / mutators
+	// ==================================================== accessors / mutators
 	const double get_xpos();
 	const double get_ypos();
 	const double get_mass();
 
+	const sf::Vector2f get_force(Body& body);
+//	const double get_xForce(Body& body);
+//	const double get_yForce(Body& body);
+
 	void set_xvel();
 	void set_yvel();
+
+	// ==================================================================== step
 	void step(double seconds, std::vector<Body*>);
 
-	// ====================================================== overloaded i/o
+	// ========================================================== overloaded i/o
 	friend std::ostream& operator <<(std::ostream&, const Body&);
 	friend std::istream& operator >>(std::istream&, Body&);
 
