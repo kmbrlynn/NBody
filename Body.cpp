@@ -2,6 +2,8 @@
 #include "Body.hpp"
 #include <iostream>
 
+
+
 // ================================================================= con/destructors
 Body::Body(double univ_radius, int window_size) :
 		   _radius(univ_radius), _size(window_size)
@@ -14,10 +16,50 @@ Body::Body(double univ_radius, int window_size) :
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
 	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
+	_num_bodies++;
 }
 
 Body::~Body()
 {}
+
+// ======================================================================= accessors
+const double Body::get_xpos()
+{
+	return _xpos;
+}
+
+const double Body::get_ypos()
+{
+	return _ypos;
+}
+
+const double Body::get_mass()
+{
+	return _mass;
+}
+
+// ======================================================================== mutators
+void Body::set_xvel()
+{
+
+}
+
+void Body::set_yvel()
+{
+
+
+}
+
+void Body::step(double seconds)
+{
+	// net Force of x
+	// net Force of y
+
+	// accel of x
+	// accel of y
+
+
+}
 
 // ======================================================== scale universe to window
 void Body::meters_to_pixels()
