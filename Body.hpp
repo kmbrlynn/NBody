@@ -6,7 +6,7 @@ class CannotLoadBackgroundImage
 class Body: public sf::Drawable
 {
 public:
-
+	
 	// ==================================================== con / destructors
 	Body(double, int);
 	~Body();
@@ -25,6 +25,8 @@ private:
 
 	// sfml's abstract sf::Drawable class is private
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	static int _num_bodies;
 
 	double _radius;	// millions of meters in the universe
 	int _size;		// hundreds of pixels in the window
