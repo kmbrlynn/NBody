@@ -3,6 +3,9 @@
 #include <cmath>
 #include <iostream>
 
+// gravitational constant
+const double G = 6.67e-11;
+
 // ================================================================= con/destructors
 Body::Body(double univ_radius, int window_size) :
 		   _radius(univ_radius), _size(window_size)
@@ -15,14 +18,10 @@ Body::Body(double univ_radius, int window_size) :
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
 	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
-
-	//_num_bodies++;
 }
 
 Body::~Body()
-{
-	//_num_bodies--;
-}
+{}
 
 // ======================================================================= accessors
 const double Body::get_mass()
@@ -41,37 +40,40 @@ const double Body::get_ypos()
 }
 
 // ======================================================================== mutators
-void Body::set_xvel(double seconds, double accel)
+void Body::set_xvel(double seconds, Body body2)
 {
+	sf::Vector2f F = force(body2);
+	double accel = F.x / _mass;
+	
 	_xvel = _xvel + (seconds * accel);
 }
 
-void Body::set_yvel(double seconds, double accel)
+void Body::set_yvel(double seconds, Body body2)
 {
+	sf::Vector2f F = force(body2);
+	double accel = F.y / _mass;
+
 	_yvel = _yvel + (seconds * accel);
 }
 
 // ================================================================= calculate force
 const sf::Vector2f Body::force(Body body2)
 {
-	// gravitational constant
-	double G = 6.67e-11;
-
 	// get the masses of the two bodies
 	double m1 = _mass;
 	double m2 = body2.get_mass();
 
-	// get distance between them
+	// calculate distance between them
 	double delta_x = _xpos - body2.get_xpos();
 	double delta_y = _ypos - body2.get_ypos();		
 	double distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
 
 	// calculate the gravitational attraction of x and y components
-	double F = (G * m1 * m2) / (distance * distance); 	
-	double xF = F * (delta_x / distance);
-	double yF = F * (delta_y / distance);
+	double net_force = (G * m1 * m2) / (distance * distance); 	
+	double x_force = net_force * (delta_x / distance);
+	double y_force = net_force * (delta_y / distance);
 	
-	sf::Vector2f force(xF, yF);
+	sf::Vector2f force(x_force, y_force);
 	return force;
 }
 
@@ -81,19 +83,13 @@ void Body::step(double seconds, std::vector<Body*> bodies)
 	std::vector<Body*>::iterator it;
 	for (it = bodies.begin(); it != bodies.end(); ++it)
 	{
-		// determine force between 2 bodies
-		sf::Vector2f F = force(**it);
-		
-		// determine their accelerations
-		double accel_x = F.x / _mass;
-		double accel_y = F.y / _mass;	
+		// update velocity
+		set_xvel(seconds, (**it));
+		set_yvel(seconds, (**it));
 	
-		// update its velocity
-		set_xvel(seconds, accel_x);
-		set_yvel(seconds, accel_y);
-
-		// update its position
-		
+		// update positions
+		_xpos = _xpos + (seconds * _xvel);
+		_ypos = _ypos + (seconds * _yvel);
 	}
 }
 

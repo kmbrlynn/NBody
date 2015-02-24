@@ -13,14 +13,11 @@ public:
 
 	// ==================================================== accessors / mutators
 	const double get_mass();
-
 	const double get_xpos();
 	const double get_ypos();
 
-//	void set_xpos(double, double);
-//	void set_ypos(double, double);
-	void set_xvel(double, double);
-	void set_yvel(double, double);
+	void set_xvel(double, Body);
+	void set_yvel(double, Body);
 
 	// =============================================== force & step calculations
 	const sf::Vector2f force(Body);
