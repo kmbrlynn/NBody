@@ -83,13 +83,14 @@ void Body::step(double seconds, std::vector<Body*> bodies)
 	std::vector<Body*>::iterator it;
 	for (it = bodies.begin(); it != bodies.end(); ++it)
 	{
-		// update velocity
+		// update velocities and positions
 		set_xvel(seconds, (**it));
 		set_yvel(seconds, (**it));
-	
-		// update positions
 		_xpos = _xpos + (seconds * _xvel);
 		_ypos = _ypos + (seconds * _yvel);
+
+		// assign new position to sprite
+		_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
 	}
 }
 

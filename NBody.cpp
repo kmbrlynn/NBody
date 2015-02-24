@@ -5,12 +5,12 @@
 #include <cstdlib>
 #include "Body.hpp"
 
-const int DEFAULT_WINDOW_SIZE = 512;
+const int DEFAULT_WINDOW_SIZE = 912;
 
 int main(int argc, char* argv[])
 {	
 //	double total_time = (double)std::atoi(argv[1]);
-//	double seconds_per_step = (double)std::atoi(argv[2]);
+	double seconds_per_step = (double)std::atoi(argv[2]);
 	
 	int window_size;
 	double universe_radius;
@@ -60,6 +60,7 @@ int main(int argc, char* argv[])
 		bodies.push_back(new Body(universe_radius, window_size));
 
 		std::cout.precision(4);
+
 		std::cout << std::scientific << *bodies[i] << std::endl;
 	}
 
@@ -88,7 +89,7 @@ int main(int argc, char* argv[])
 		for (it = bodies.begin(); it != bodies.end(); ++it)
 		{
 			window.draw(**it);
-			//	(**it).step(seconds_per_step, bodies);
+			(**it).step(seconds_per_step, bodies);
 
 		}
 
