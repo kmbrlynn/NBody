@@ -16,16 +16,14 @@ public:
 
 	const double get_xpos();
 	const double get_ypos();
-	const double get_xvel();
-	const double get_yvel();
 
-	void set_xpos(double, double);
-	void set_ypos(double, double);
+//	void set_xpos(double, double);
+//	void set_ypos(double, double);
 	void set_xvel(double, double);
 	void set_yvel(double, double);
 
 	// =============================================== force & step calculations
-	const sf::Vector2f force(Body&);
+	const sf::Vector2f force(Body);
 	void step(double, std::vector<Body*>);
 
 	// ========================================================== overloaded i/o
@@ -39,8 +37,6 @@ private:
 
 	// sfml's abstract sf::Drawable class is private
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
-//	static int _num_bodies;
 
 	double _radius;	// millions of meters in the universe
 	int _size;		// hundreds of pixels in the window

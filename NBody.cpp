@@ -9,8 +9,8 @@ const int DEFAULT_WINDOW_SIZE = 512;
 
 int main(int argc, char* argv[])
 {	
-	double total_time = (double)std::atoi(argv[1]);
-	double seconds_per_step = (double)std::atoi(argv[2]);
+//	double total_time = (double)std::atoi(argv[1]);
+//	double seconds_per_step = (double)std::atoi(argv[2]);
 	
 	int window_size;
 	double universe_radius;
@@ -88,16 +88,8 @@ int main(int argc, char* argv[])
 		for (it = bodies.begin(); it != bodies.end(); ++it)
 		{
 			window.draw(**it);
-		}
-		
-		for (double i = 0; i < total_time; i += seconds_per_step)
-		{
-			std::vector<Body*>::iterator it;
-			for (it = bodies.begin(); it != bodies.end(); ++it)
-			{
-				(**it).step(i, bodies);
-				window.draw(**it);
-			}
+			//	(**it).step(seconds_per_step, bodies);
+
 		}
 
 		window.display();
