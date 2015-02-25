@@ -45,7 +45,7 @@ const std::string Body::get_filename()
 }
 
 // ======================================================================== mutators
-void Body::set_xvel(double seconds, Body body2)
+void Body::set_xvel(double seconds, Body* body2)
 {
 	sf::Vector2f F = force(body2);
 	double accel = F.x / _mass;
@@ -53,7 +53,7 @@ void Body::set_xvel(double seconds, Body body2)
 	_xvel = _xvel + (seconds * accel);
 }
 
-void Body::set_yvel(double seconds, Body body2)
+void Body::set_yvel(double seconds, Body* body2)
 {
 	sf::Vector2f F = force(body2);
 	double accel = F.y / _mass;
@@ -64,36 +64,36 @@ void Body::set_yvel(double seconds, Body body2)
 }
 
 // ================================================================= calculate force
-const sf::Vector2f Body::force(Body body2)
+const sf::Vector2f Body::force(Body* body2)
 {
 	// get the masses of the two bodies
 	double m1 = _mass;
-	double m2 = body2.get_mass();
+	double m2 = body2-> get_mass();
 
-std::cout << body2.get_filename() << " mass = " << m2 << std::endl;
+std::cout << body2-> get_filename() << " mass = " << m2 << std::endl;
 std::cout << get_filename() << " mass = " << m1 << std::endl;
 
-std::cout << body2.get_filename() << " xpos = " << body2.get_xpos() << std::endl;
+std::cout << body2-> get_filename() << " xpos = " << body2-> get_xpos() << std::endl;
 
 
 	// calculate distance between them
-	double delta_x = abs(_xpos - body2.get_xpos());
-	double delta_y = abs(_ypos - body2.get_ypos());		
+	double delta_x = abs(_xpos - body2-> get_xpos());
+	double delta_y = abs(_ypos - body2-> get_ypos());		
 	double distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
 
 std::cout << "delta_x = " << delta_x << std::endl;
 std::cout << "delta_y = " << delta_y << std::endl;		
 std::cout << "distance from " << _filename << " to ";
-std::cout << body2.get_filename() << " = " << distance << std::endl;
+std::cout << body2-> get_filename() << " = " << distance << std::endl;
 
 	// calculate the gravitational attraction of x and y components
 	double net_force = (G * m1 * m2) / (distance * distance); 	
 	double x_force = net_force * (delta_x / distance);
 	double y_force = net_force * (delta_y / distance);
 	
-std::cout << "x force on " << _filename << " from " << body2.get_filename();
+std::cout << "x force on " << _filename << " from " << body2-> get_filename();
 std::cout << " = " << x_force << std::endl;
-std::cout << "y force on " << _filename << " from " << body2.get_filename();
+std::cout << "y force on " << _filename << " from " << body2-> get_filename();
 std::cout << " = " << y_force << std::endl << std::endl;
 
 
@@ -108,8 +108,8 @@ void Body::step(double seconds, std::vector<Body*> bodies)
 	for (it = bodies.begin(); it != bodies.end(); ++it)
 	{
 		// update velocities and positions
-		set_xvel(seconds, (**it));
-		set_yvel(seconds, (**it));
+		set_xvel(seconds, (*it));
+		set_yvel(seconds, (*it));
 		_xpos = _xpos + (seconds * _xvel);
 		_ypos = _ypos + (seconds * _yvel);
 

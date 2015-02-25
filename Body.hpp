@@ -19,11 +19,11 @@ public:
 	// for debugging
 	const std::string get_filename();
 
-	void set_xvel(double, Body);
-	void set_yvel(double, Body);
+	void set_xvel(double, Body*);
+	void set_yvel(double, Body*);
 
 	// =============================================== force & step calculations
-	const sf::Vector2f force(Body);
+	const sf::Vector2f force(Body*);
 	void step(double, std::vector<Body*>);
 
 	// ========================================================== overloaded i/o
