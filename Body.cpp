@@ -17,7 +17,7 @@ Body::Body(double univ_radius, int window_size) :
 
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
-	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
+//	_sprite.setPosition(sf::Vector2f(_xpos, _ypos));
 }
 
 Body::~Body()
@@ -131,18 +131,22 @@ void Body::meters_to_pixels()
 	// determine meters per pixel
 	double univ_size = _radius * 2;
 	double meters_per_pixel = univ_size / _size;
-
+	
 	// set an origin in center of window
+	double xpos = _xpos;
+	double ypos = _ypos;
 	double x_origin = _size / 2;
 	double y_origin = _size / 2;
 
 	// scale down the x and y positions
-	_xpos = _xpos / meters_per_pixel;
-	_ypos = _ypos / meters_per_pixel;
+	xpos = xpos / meters_per_pixel;
+	ypos = ypos / meters_per_pixel;
 
 	// shift from upper left corner to new origin
-	_xpos += x_origin;
-	_ypos += y_origin;
+	xpos += x_origin;
+	ypos += y_origin;
+
+	_sprite.setPosition(sf::Vector2f(xpos, ypos));
 }
 
 // ====================================================================== overridden
@@ -165,21 +169,18 @@ std::istream& operator >>(std::istream& in_stream, Body& body)
 
 std::ostream& operator <<(std::ostream& out_stream, const Body& body)
 {
-	// reverse meters-to-pixels
+/*	// reverse meters-to-pixels, for printing
 	double univ_size = body._radius * 2;
 	double meters_per_pixel = univ_size / body._size;
 	double xpos = body._xpos - (body._size / 2);
 	double ypos = body._ypos - (body._size / 2);
-
-	// scale x and y positions back up for printing
 	xpos = xpos * meters_per_pixel;
 	ypos = ypos * meters_per_pixel;
 
 	out_stream << " " << xpos << " ";
 	out_stream << " " << ypos << " ";
-
-//	out_stream << " " << body._xpos << " ";
-//	out_stream << " " << body._ypos << " ";
+*/	out_stream << " " << body._xpos << " ";
+	out_stream << " " << body._ypos << " ";
 	out_stream << " " << body._xvel << " ";
 	out_stream << " " << body._yvel << " ";
 	out_stream << " " << body._mass << " ";
