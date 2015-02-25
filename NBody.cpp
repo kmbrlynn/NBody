@@ -55,14 +55,24 @@ int main(int argc, char* argv[])
 	std::cout << " ...xpos...  ...ypos...  ...xvel...  ...yvel...  ...mass...  filename";
 	std::cout << std::endl << std::endl;
 
+//	std::cout << abs(-10 + 3) << std::endl << std::endl;
+
 	for (int i = 0; i < n_bodies; ++i)
 	{	
 		bodies.push_back(new Body(universe_radius, window_size));
 
 		std::cout.precision(4);
-
-		std::cout << std::scientific << *bodies[i] << std::endl;
+		std::cout << std::scientific << *bodies[i] << std::endl;		
 	}
+
+		std::vector<Body*>::iterator it;
+		for (it = bodies.begin(); it != bodies.end(); ++it)
+		{
+			(**it).step(seconds_per_step, bodies);
+//			std::cout << (**it) << std::endl;;
+		}
+	
+//	*bodies.back().step(seconds_per_step, bodies);
 
 	// ============================================================================== SFML
 	sf::RenderWindow window(sf::VideoMode(window_size, window_size), "N-Body Simulation");
@@ -89,8 +99,8 @@ int main(int argc, char* argv[])
 		for (it = bodies.begin(); it != bodies.end(); ++it)
 		{
 			window.draw(**it);
-			(**it).step(seconds_per_step, bodies);
-
+//			(**it).step(seconds_per_step, bodies);
+//			std::cout << (**it) << std::endl;;
 		}
 
 		window.display();

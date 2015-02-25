@@ -16,6 +16,9 @@ public:
 	const double get_xpos();
 	const double get_ypos();
 
+	// for debugging
+	const std::string get_filename();
+
 	void set_xvel(double, Body);
 	void set_yvel(double, Body);
 
