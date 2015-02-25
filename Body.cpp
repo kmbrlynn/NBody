@@ -16,29 +16,36 @@ Body::Body(double univ_radius, int window_size) :
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
 
-	update_sprite_position();
+	// scale universe down to window
+	_meters_per_pixel = (_radius * 2) / _size;
+	_xorigin = _size / 2;
+	_yorigin = _size / 2;
+	
+//	_sprite.setPosition(sf::Vector2f(xpos, ypos));
+
+//	update_sprite_position();
 }
 
 Body::~Body()
 {}
 
 // ======================================================================= accessors
-const double Body::get_mass()
+double Body::get_mass() const
 {
 	return _mass;
 }
 
-const double Body::get_xpos()
+double Body::get_xpos() const
 {
 	return _xpos;
 }
 
-const double Body::get_ypos()
+double Body::get_ypos() const
 {
 	return _ypos;
 }
 
-const std::string Body::get_filename()
+std::string Body::get_filename() const
 {
 	return _filename;
 }
@@ -51,49 +58,35 @@ void Body::set_xvel(double seconds, double acceleration)
 
 void Body::set_yvel(double seconds, double acceleration)
 {
-	_yvel = _yvel + (seconds * acceleration);
+	_yvel = _yvel - (seconds * acceleration);
 }
 
 void Body::update_sprite_position()
 {
-	// determine meters per pixel
-	double univ_size = _radius * 2;
-	double meters_per_pixel = univ_size / _size;
-	double xpos = _xpos;
-	double ypos = _ypos;
-	
-	// set an origin in center of window
-	double x_origin = _size / 2;
-	double y_origin = _size / 2;
-
 	// scale down the x and y positions
-	xpos = xpos / meters_per_pixel;
-	ypos = ypos / meters_per_pixel;
+	double xpos = _xpos / _meters_per_pixel;
+	double ypos = _ypos / _meters_per_pixel;
 
-	// shift from upper left corner to new origin
-	xpos += x_origin;
-	ypos += y_origin;
+	// shift from upper left corner to center
+	xpos += _xorigin;
+	ypos += _yorigin;
 
 	_sprite.setPosition(sf::Vector2f(xpos, ypos));
 	// may want to set a local center origin here
 }
 
 // ================================================================= calculate force
-const sf::Vector2f Body::force(Body& body2)
+sf::Vector2f Body::force(const Body& body2)
 {
 	// get the masses of the two bodies
 	double m1 = _mass;
 	double m2 = body2.get_mass();
 
 	// calculate distance between them
-	double delta_x = abs(body2.get_xpos() - _xpos);
-	double delta_y = abs(body2.get_ypos() - _ypos);		
+	double delta_x = (body2.get_xpos() - _xpos);
+	double delta_y = (body2.get_ypos() - _ypos);		
 	double distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
-/*
-std::cout << std::endl;
-std::cout << "Distance between " << _filename << " and " << body2.get_filename();
-std::cout << " = " << distance << std::endl;
-*/
+
 	// calculate the gravitational attraction of x and y components
 	double net_force = (G * m1 * m2) / (distance * distance); 	
 	double x_force = net_force * (delta_x / distance);
@@ -104,46 +97,47 @@ std::cout << " = " << distance << std::endl;
 }
 
 // ============================================================================ step
-void Body::step(double seconds, Body& body2)
+void Body::step(double seconds)
 {
-	if (_filename == body2.get_filename())
-		return;	
+//	if (_filename == body2.get_filename())
+//		return;	
 
 	// calculate net force exerted on it from other body
-	sf::Vector2f F = force(body2);
+//	sf::Vector2f F = force(body2);
 
 	// calculate acceleration in each component
-	double accel_x = F.x / _mass;
-	double accel_y = F.y / _mass;
+//	double accel_x = F.x / _mass;
+//	double accel_y = F.y / _mass;
 
 	// calculate velocities
-	set_xvel(seconds, accel_x);
-	set_yvel(seconds, accel_y);
+//	set_xvel(seconds, accel_x);
+//	set_yvel(seconds, accel_y);
+//	_xvel = _xvel + (seconds * accel_x);
+//	_yvel = _yvel - (seconds * accel_y);
 	
 	// set new position
 	_xpos = _xpos + (seconds * _xvel);
-	_ypos = _ypos + (seconds * _yvel);
-/*
-std::cout << "new xpos of " << _filename << " = " << _xpos << std::endl;
-std::cout << "new ypos of " << _filename << " = " << _ypos << std::endl;
-*/
+	_ypos = _ypos - (seconds * _yvel);
+
 	// assign new position to sprite
 	// may want to put origin in center of image
-	update_sprite_position();
-
-/*
-std::cout << "x-force between " << _filename << " and " << body2.get_filename();
-std::cout << " = " << F.x << std::endl;
-std::cout << "y-force between " << _filename << " and " << body2.get_filename();
-std::cout << " = " << F.y << std::endl;
-*/
-
+//	update_sprite_position();
 }
 
 // ====================================================================== overridden
 void Body::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(_sprite, states);	
+	// scale down the x and y positions
+	double xpos = _xpos / _meters_per_pixel;
+	double ypos = _ypos / _meters_per_pixel;
+
+	// shift from upper left corner to center
+	xpos += _xorigin;
+	ypos += _yorigin;
+
+	sf::Sprite sprite = _sprite;
+	sprite.setPosition(sf::Vector2f(xpos, ypos));
+	target.draw(sprite);	
 }
 
 std::istream& operator >>(std::istream& in_stream, Body& body)
@@ -171,23 +165,3 @@ std::ostream& operator <<(std::ostream& out_stream, const Body& body)
 }
 
 
-/*
-std::cout << "delta_x = " << delta_x << std::endl;
-std::cout << "delta_y = " << delta_y << std::endl;		
-std::cout << "distance from " << _filename << " to ";
-std::cout << body2-> get_filename() << " = " << distance << std::endl;
-
-
-std::cout << "x force on " << _filename << " from " << body2-> get_filename();
-std::cout << " = " << x_force << std::endl;
-std::cout << "y force on " << _filename << " from " << body2-> get_filename();
-std::cout << " = " << y_force << std::endl << std::endl;
-
-
-
-
-
-
-
-
-*/
