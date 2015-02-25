@@ -83,13 +83,16 @@ int main(int argc, char* argv[])
 		else
 			window.clear(sf::Color::Black);
 
-		std::vector<Body*>::iterator it;
-		for (it = bodies.begin(); it != bodies.end(); ++it)
+		std::vector<Body*>::iterator it_i;
+		for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
 		{
-			for (int i = 0; i < total_time; i += seconds_per_step);
+			for (int t = 0; t < total_time; t += seconds_per_step);
 			{
-				window.draw(**it);
-				(**it).step(seconds_per_step, *bodies[3]);
+				window.draw(**it_i);
+				
+				std::vector<Body*>::iterator it_j;
+				for (it_j = bodies.begin(); it_j != bodies.end(); ++it_j)
+					(**it_i).step(seconds_per_step, (**it_j));
 			}
 		}
 
