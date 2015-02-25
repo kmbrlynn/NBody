@@ -9,8 +9,8 @@ const int DEFAULT_WINDOW_SIZE = 912;
 
 int main(int argc, char* argv[])
 {	
-//	double total_time = (double)std::atoi(argv[1]);
-//	double seconds_per_step = (double)std::atoi(argv[2]);
+	double total_time = (double)std::atoi(argv[1]);
+	double seconds_per_step = (double)std::atoi(argv[2]);
 	
 	int window_size;
 	double universe_radius;
@@ -58,20 +58,10 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < n_bodies; ++i)
 	{	
 		bodies.push_back(new Body(universe_radius, window_size));
-
 		std::cout.precision(4);
 		std::cout << std::scientific << *bodies[i] << std::endl;		
 	}
-
-// TEST STEP -----------------
-
-	std::vector<Body*>::iterator it;
-	for (it = bodies.begin(); it != bodies.end(); ++it)
-	{
-//		(**it).step(seconds_per_step, bodies);
-	}
-// -------------------	
-
+	
 	// ============================================================================== SFML
 	sf::RenderWindow window(sf::VideoMode(window_size, window_size), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
@@ -96,9 +86,11 @@ int main(int argc, char* argv[])
 		std::vector<Body*>::iterator it;
 		for (it = bodies.begin(); it != bodies.end(); ++it)
 		{
-			window.draw(**it);
-//			(**it).step(seconds_per_step, bodies);
-//			std::cout << (**it) << std::endl;;
+			for (int i = 0; i < total_time; i += seconds_per_step);
+			{
+				window.draw(**it);
+				(**it).step(seconds_per_step, *bodies[3]);
+			}
 		}
 
 		window.display();

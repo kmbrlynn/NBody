@@ -19,22 +19,19 @@ public:
 	// for debugging
 	const std::string get_filename();
 
-	void set_xvel(double, Body*);
-	void set_yvel(double, Body*);
+	void set_xvel(double, double);
+	void set_yvel(double, double);
+	void update_sprite_position();
 
 	// =============================================== force & step calculations
-	const sf::Vector2f force(Body*);
-	void step(double, std::vector<Body*>);
+	const sf::Vector2f force(Body&);
+	void step(double, Body&);
 
 	// ========================================================== overloaded i/o
 	friend std::ostream& operator <<(std::ostream&, const Body&);
 	friend std::istream& operator >>(std::istream&, Body&);
 
 private:
-
-	// scale the universe to the window size. occurs in constructor
-	void meters_to_pixels();
-
 	// sfml's abstract sf::Drawable class is private
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
