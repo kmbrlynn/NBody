@@ -35,6 +35,8 @@ private:
 	// sfml's abstract sf::Drawable class is private
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+	static int _body_id;
+
 	double _radius;			
 	int _size;				
 
