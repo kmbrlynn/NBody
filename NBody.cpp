@@ -94,30 +94,35 @@ int main(int argc, char* argv[])
 				for (it_j = bodies.begin(); it_j != bodies.end(); ++it_j)
 				{	
 					double m1 = (**it_i).get_mass();
+					double xvel = (**it_i).get_xvel();
+					double yvel = (**it_i).get_yvel();
 					
 					if (*it_i != *it_j)
 					{
-						// get the masses of the two bodies
-						double m2 = (**it_j).get_mass();
-
+						// calculate distance between This body and That body
 						double delta_x = (**it_j).get_xpos() - (**it_i).get_xpos();
 						double delta_y = (**it_j).get_ypos() - (**it_i).get_ypos();
 						double distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
 
-						// calculate gravitational force between them
+						// calculate gravitational force between This and That
+						double m2 = (**it_j).get_mass();
 						double net_force = (G * m1 * m2) / (distance * distance);
 						double x_force = net_force * (delta_x / distance);
 						double y_force = net_force * (delta_y / distance);
 
-						// calculate acceleration
+						// calculate acceleration of This
 						double x_accel = x_force / m1;
 						double y_accel = y_force / m2;
 
-						// set new velocity
-						(**it_i).set_xvel(seconds_per_step, x_accel);
-						(**it_i).set_yvel(seconds_per_step, y_accel);	
+						// calculate new velocity of This
+						xvel = xvel + seconds_per_step * (x_force / delta_x);
+						yvel = yvel + seconds_per_step * (y_force / delta_y);
 
-						// print updated info
+						// add This's new velocity to current velocity
+						(**it_i).set_xvel(seconds_per_step, xvel, x_accel);
+						(**it_i).set_yvel(seconds_per_step, yvel, y_accel);	
+
+						// print updated info for debugging
 						std::cout << (**it_i).get_filename() << " - ";
 						std::cout << (**it_j).get_filename() << " accel =\t";
 						std::cout << x_accel << " | " << y_accel << std::endl;

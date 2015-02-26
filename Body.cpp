@@ -42,6 +42,16 @@ double Body::get_ypos() const
 	return _ypos;
 }
 
+double Body::get_xvel() const
+{
+	return _xvel;
+}
+
+double Body::get_yvel() const
+{
+	return _yvel;
+}
+
 std::string Body::get_filename() const
 {
 	return _filename;
@@ -58,14 +68,14 @@ void Body::set_yaccel(sf::Vector2f force)
 	_yaccel = force.y / _mass;
 }
 */
-void Body::set_xvel(double seconds, double accel)
+void Body::set_xvel(double seconds, double xvel, double accel)
 {	
-	_xvel = _xvel + (seconds * accel);
+	_xvel = xvel + (seconds * accel);
 }
 
-void Body::set_yvel(double seconds, double accel)
+void Body::set_yvel(double seconds, double yvel, double accel)
 {
-	_yvel = _yvel - (seconds * accel);
+	_yvel = yvel - (seconds * accel);
 }
 
 /*

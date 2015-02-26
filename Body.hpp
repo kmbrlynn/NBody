@@ -15,12 +15,14 @@ public:
 	double get_mass() const;
 	double get_xpos() const;
 	double get_ypos() const;
+	double get_xvel() const;
+	double get_yvel() const;
 
 	// for debugging
 	std::string get_filename() const;
 
-	void set_xvel(double, double);
-	void set_yvel(double, double);
+	void set_xvel(double, double, double);
+	void set_yvel(double, double, double);
 
 	// =============================================== force & step calculations
 	sf::Vector2f force(const Body&);
