@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	
 	bool background_file_exists;
 
-	// =============================================== if background image exists, load it
+	// ============================================ if background image exists, load it
 	try
 	{
 		background_image.loadFromFile("starfield.jpg");
@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 		window_size = DEFAULT_WINDOW_SIZE;
 	}
 	
-	// =========================================================== create bodies from file
+	// ========================================================== create bodies from file
 	std::cin >> n_bodies;
 	std::cout << std::endl << "Number of bodies: " << n_bodies << std::endl;
 	std::cin >> universe_radius;
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 		std::cout << std::scientific << *bodies[i] << std::endl;		
 	}
 	
-	// ============================================================================== SFML
+	// ============================================================================= SFML
 	sf::RenderWindow window(sf::VideoMode(window_size, window_size), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
 
@@ -85,6 +85,10 @@ int main(int argc, char* argv[])
 		else
 			window.clear(sf::Color::Black);
 
+		double m1, m2, delta_x, delta_y, distance;
+		double net_force, x_force, y_force;
+		double x_accel, y_accel;
+
 		for (int t = 0; t < total_time; t += seconds_per_step);
 		{
 			std::vector<Body*>::iterator it_i;
@@ -95,17 +99,46 @@ int main(int argc, char* argv[])
 				{	
 					if (*it_i != *it_j)
 					{
-						// calculate force exerted on This body by That body	
+						// get the masses of the two bodies
+						m1 = (**it_i).get_mass();
+						m2 = (**it_j).get_mass();
+	
+						// calculate distance between them
+						delta_x = (**it_j).get_xpos() - (**it_i).get_xpos();
+						delta_y = (**it_j).get_ypos() - (**it_i).get_ypos();
+						distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
+
+						// calculate gravitational force between them
+						net_force = (G * m1 * m2) / (distance * distance);
+						x_force = net_force * (delta_x / distance);
+						y_force = net_force * (delta_y / distance);
+
+						// calculate acceleration
+						x_accel = x_force / m1;
+						y_accel = y_force / m2;
+
+						// set new velocity
+						(**it_i).set_xvel(seconds_per_step, x_accel);
+						(**it_i).set_yvel(seconds_per_step, y_accel);
+						
+						// update position
+						(**it_i).step(seconds_per_step);
+												
+	
+	/*					// calculate force exerted on This body by That body	
 						sf::Vector2f F;
 						F = (**it_i).force(**it_j);
 						
 						// update This body's accel, velocity, position
 						(**it_i).step(seconds_per_step, F);
-				
-						window.draw(**it_i);
+	*/	
+					}	
 
+					window.draw(**it_i);
+					std::cout << (**it_i) << std::endl;
+					
+			
 					}
-				}
 			}
 		}
 

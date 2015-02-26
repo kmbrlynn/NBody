@@ -19,29 +19,24 @@ public:
 	// for debugging
 	std::string get_filename() const;
 
-/*	void set_xaccel(sf::Vector2f);
-	void set_yaccel(sf::Vector2f);
-	void set_xvel(double);
-	void set_yvel(double);
-*/	void update_sprite_position();
+	void set_xvel(double, double);
+	void set_yvel(double, double);
 
 	// =============================================== force & step calculations
 	sf::Vector2f force(const Body&);
-	void step(double, sf::Vector2f);
+	void step(double);
 
 	// ========================================================== overloaded i/o
 	friend std::ostream& operator <<(std::ostream&, const Body&);
 	friend std::istream& operator >>(std::istream&, Body&);
 
 private:
+	
 	// sfml's abstract sf::Drawable class is private
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	double _radius;			
 	int _size;				
-	double _meters_per_pixel;
-	double _xorigin;
-	double _yorigin;
 
 	double _xpos;
 	double _ypos;	
