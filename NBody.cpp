@@ -90,16 +90,18 @@ int main(int argc, char* argv[])
 			std::vector<Body*>::iterator it_i;
 			for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
 			{
+				// This body
+				double m1 = (**it_i).get_mass();
+				double xvel = (**it_i).get_xvel();
+				double yvel = (**it_i).get_yvel();
+		
 				std::vector<Body*>::iterator it_j;
 				for (it_j = bodies.begin(); it_j != bodies.end(); ++it_j)
 				{	
-					double m1 = (**it_i).get_mass();
-					double xvel = (**it_i).get_xvel();
-					double yvel = (**it_i).get_yvel();
-					
+					// That body
 					if (*it_i != *it_j)
 					{
-						// calculate distance between This body and That body
+						// calculate distance between This and That
 						double delta_x = (**it_j).get_xpos() - (**it_i).get_xpos();
 						double delta_y = (**it_j).get_ypos() - (**it_i).get_ypos();
 						double distance = sqrt( (delta_x * delta_x) + (delta_y * delta_y) );
@@ -118,7 +120,7 @@ int main(int argc, char* argv[])
 						xvel = xvel + seconds_per_step * (x_force / delta_x);
 						yvel = yvel + seconds_per_step * (y_force / delta_y);
 
-						// add This's new velocity to current velocity
+						// add This's new velocity to its current velocity
 						(**it_i).set_xvel(seconds_per_step, xvel, x_accel);
 						(**it_i).set_yvel(seconds_per_step, yvel, y_accel);	
 
@@ -137,7 +139,7 @@ int main(int argc, char* argv[])
 						std::cout << std::endl;
 					}	
 
-					// update position
+					// update position of This
 					(**it_i).step(seconds_per_step);
 					window.draw(**it_i);
 				}
