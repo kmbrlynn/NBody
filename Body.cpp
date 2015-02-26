@@ -6,7 +6,7 @@
 // gravitational constant
 const double G = 6.67e-11;
 
-int Body::_body_id = 0;
+int Body::_body_count = 0;
 
 // ================================================================= con/destructors
 Body::Body(double univ_radius, int window_size) :
@@ -18,12 +18,12 @@ Body::Body(double univ_radius, int window_size) :
 	_texture.loadFromFile(_filename);
 	_sprite.setTexture(_texture);
 
-	_body_id++;
+	_body_count++;
 }
 
 Body::~Body()
 {
-	_body_id--;
+	_body_count--;
 }
 
 // ======================================================================= accessors

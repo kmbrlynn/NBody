@@ -87,18 +87,18 @@ int main(int argc, char* argv[])
 
 		for (int t = 0; t < total_time; t += seconds_per_step);
 		{
+			// This body
 			std::vector<Body*>::iterator it_i;
 			for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
 			{
-				// This body
 				double m1 = (**it_i).get_mass();
 				double xvel = (**it_i).get_xvel();
 				double yvel = (**it_i).get_yvel();
 		
+				// That body
 				std::vector<Body*>::iterator it_j;
 				for (it_j = bodies.begin(); it_j != bodies.end(); ++it_j)
 				{	
-					// That body
 					if (*it_i != *it_j)
 					{
 						// calculate distance between This and That
@@ -123,25 +123,20 @@ int main(int argc, char* argv[])
 						// add This's new velocity to its current velocity
 						(**it_i).set_xvel(seconds_per_step, xvel, x_accel);
 						(**it_i).set_yvel(seconds_per_step, yvel, y_accel);	
-
-						// print updated info for debugging
-						std::cout << (**it_i).get_filename() << " - ";
-						std::cout << (**it_j).get_filename() << " accel =\t";
-						std::cout << x_accel << " | " << y_accel << std::endl;
-
-						std::cout << (**it_i).get_filename() << " - ";
-						std::cout << (**it_j).get_filename() << " force =\t";
-						std::cout << x_force << " | " << y_force << std::endl;
-
-						std::cout << (**it_i).get_filename() << " - ";
-						std::cout << (**it_j).get_filename() << " delta =\t" ;
-						std::cout << delta_x << " | " << delta_y << std::endl;
-						std::cout << std::endl;
 					}	
 
 					// update position of This
 					(**it_i).step(seconds_per_step);
 					window.draw(**it_i);
+
+					// for debugging
+					std::cout << (**it_i).get_filename() << " new vel =\t";
+					std::cout << xvel << " | " << yvel << std::endl;
+					std::cout << (**it_i).get_filename() << " new pos =\t";
+					std::cout << (**it_i).get_xpos() << " | " ;
+					std::cout << (**it_i).get_ypos() << std::endl << std::endl;
+
+
 				}
 			}
 		}
