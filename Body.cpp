@@ -20,10 +20,8 @@ Body::Body(double univ_radius, int window_size) :
 	_meters_per_pixel = (_radius * 2) / _size;
 	_xorigin = _size / 2;
 	_yorigin = _size / 2;
-	
-//	_sprite.setPosition(sf::Vector2f(xpos, ypos));
 
-//	update_sprite_position();
+	update_sprite_position();
 }
 
 Body::~Body()
@@ -51,15 +49,26 @@ std::string Body::get_filename() const
 }
 
 // ======================================================================== mutators
-void Body::set_xvel(double seconds, double acceleration)
-{	
-	_xvel = _xvel + (seconds * acceleration);
+/*void Body::set_xaccel(sf::Vector2f force)
+{
+	_xaccel = force.x / _mass;
 }
 
-void Body::set_yvel(double seconds, double acceleration)
+void Body::set_yaccel(sf::Vector2f force)
 {
-	_yvel = _yvel - (seconds * acceleration);
+	_yaccel = force.y / _mass;
 }
+
+void Body::set_xvel(double seconds)
+{	
+	_xvel = _xvel + (seconds * _xaccel);
+}
+
+void Body::set_yvel(double seconds)
+{
+	_yvel = _yvel - (seconds * _yaccel);
+}
+*/
 
 void Body::update_sprite_position()
 {
@@ -97,47 +106,29 @@ sf::Vector2f Body::force(const Body& body2)
 }
 
 // ============================================================================ step
-void Body::step(double seconds)
+void Body::step(double seconds, sf::Vector2f F)
 {
-//	if (_filename == body2.get_filename())
-//		return;	
-
-	// calculate net force exerted on it from other body
-//	sf::Vector2f F = force(body2);
-
 	// calculate acceleration in each component
-//	double accel_x = F.x / _mass;
-//	double accel_y = F.y / _mass;
+	_xaccel = F.x / _mass;
+	_yaccel = F.y / _mass;
 
 	// calculate velocities
-//	set_xvel(seconds, accel_x);
-//	set_yvel(seconds, accel_y);
-//	_xvel = _xvel + (seconds * accel_x);
-//	_yvel = _yvel - (seconds * accel_y);
-	
+	_xvel = _xvel + (seconds * _xaccel);
+	_yvel = _yvel - (seconds * _yaccel);
+
 	// set new position
 	_xpos = _xpos + (seconds * _xvel);
 	_ypos = _ypos - (seconds * _yvel);
 
 	// assign new position to sprite
 	// may want to put origin in center of image
-//	update_sprite_position();
+	update_sprite_position();
 }
 
 // ====================================================================== overridden
 void Body::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	// scale down the x and y positions
-	double xpos = _xpos / _meters_per_pixel;
-	double ypos = _ypos / _meters_per_pixel;
-
-	// shift from upper left corner to center
-	xpos += _xorigin;
-	ypos += _yorigin;
-
-	sf::Sprite sprite = _sprite;
-	sprite.setPosition(sf::Vector2f(xpos, ypos));
-	target.draw(sprite);	
+	target.draw(_sprite);	
 }
 
 std::istream& operator >>(std::istream& in_stream, Body& body)

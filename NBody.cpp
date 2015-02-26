@@ -85,42 +85,25 @@ int main(int argc, char* argv[])
 		else
 			window.clear(sf::Color::Black);
 
-		std::vector<Body*>::iterator it_i;
-		for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
+		for (int t = 0; t < total_time; t += seconds_per_step);
 		{
-			for (int t = 0; t < total_time; t += seconds_per_step);
+			std::vector<Body*>::iterator it_i;
+			for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
 			{
-				// draw This body
-				window.draw(**it_i);
-				std::cout << (**it_i) << std::endl;			
-
 				std::vector<Body*>::iterator it_j;
 				for (it_j = bodies.begin(); it_j != bodies.end(); ++it_j)
 				{	
 					if (*it_i != *it_j)
 					{
+						// calculate force exerted on This body by That body	
+						sf::Vector2f F;
+						F = (**it_i).force(**it_j);
 						
-					// calc force exerted on This body by That body
-					double m1 = (**it_i).get_mass();
-					double m2 = (**it_j).get_mass();
-													
-					double delta_x = (**it_j).get_xpos() - (**it_i).get_xpos();
-					double delta_y = (**it_j).get_ypos() - (**it_i).get_ypos();
-					double distance = sqrt((delta_x*delta_x) + (delta_y*delta_y));
+						// update This body's accel, velocity, position
+						(**it_i).step(seconds_per_step, F);
+				
+						window.draw(**it_i);
 
-					double net_force = (G*m1*m2) / (distance*distance);		
-					double x_force = net_force * (delta_x / distance);
-					double y_force = net_force * (delta_y / distance);
-	
-					// calculate acceleration of This body
-					double accel_x = x_force / m1;
-					double accel_y = y_force / m1;
-					
-					// set velocity of This body
-					(**it_i).set_xvel(seconds_per_step, accel_x);								(**it_i).set_yvel(seconds_per_step, accel_y);	
-		
-					// update This body's position
-					(**it_i).step(seconds_per_step);
 					}
 				}
 			}
