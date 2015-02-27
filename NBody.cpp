@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
 	sf::Text elapsed_time;
 	elapsed_time.setFont(font);
 	
-	while (window.isOpen())
+	for (int t = 0; t < total_time; t += seconds_per_step)
 	{
 		sf::Event event;
 
@@ -91,58 +91,55 @@ int main(int argc, char* argv[])
 		else
 			window.clear(sf::Color::Black);
 
-		for (int t = 0; t < total_time; t += seconds_per_step);
-		{
 			// elapsed time
 	//		std::ostringstream string_stream;
 	//		string_stream << t;
 	//		std::string time = string_stream.str();
 	//		elapsed_time.setString(time);
 			
-			// This body
-			std::vector<Body*>::iterator it_i;
-			for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
-			{
-				// maintain these values for all of the Thats
-				double m1 = (**it_i).get_mass();	
-				double x_force = 0;
-				double y_force = 0;
-				double x_accel;
-				double y_accel;
+		// This body
+		std::vector<Body*>::iterator it_i;
+		for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
+		{
+			// maintain these values for all of the Thats
+			double m1 = (**it_i).get_mass();	
+			double x_force = 0;
+			double y_force = 0;
+			double x_accel;
+			double y_accel;
 
-				// That body
-				std::vector<Body*>::iterator it_j;
-				for (it_j = bodies.begin(); it_j != bodies.end(); ++it_j)
-				{	
-					if (*it_i != *it_j)
-					{
-						// calculate distance between This and That
-						double delta_x = (**it_j).get_xpos() - (**it_i).get_xpos();
-						double delta_y = (**it_j).get_ypos() - (**it_i).get_ypos();
-						double distance = sqrt((delta_x * delta_x) + (delta_y * delta_y));
+			// That body
+			std::vector<Body*>::iterator it_j;
+			for (it_j = bodies.begin(); it_j != bodies.end(); ++it_j)
+			{	
+				if (*it_i != *it_j)
+				{
+					// calculate distance between This and That
+					double delta_x = (**it_j).get_xpos() - (**it_i).get_xpos();
+					double delta_y = (**it_j).get_ypos() - (**it_i).get_ypos();
+					double distance = sqrt((delta_x * delta_x) + (delta_y * delta_y));
 
-						// calculate gravitational force between This and That
-						double m2 = (**it_j).get_mass();
-						double net_force = (G * m1 * m2) / (distance * distance);
-						x_force += net_force * (delta_x / distance);
-						y_force += net_force * (delta_y / distance);
+					// calculate gravitational force between This and That
+					double m2 = (**it_j).get_mass();
+					double net_force = (G * m1 * m2) / (distance * distance);
+					x_force += net_force * (delta_x / distance);
+					y_force += net_force * (delta_y / distance);
 
-						// calculate acceleration of This
-						x_accel = x_force / m1;
-						y_accel = y_force / m1;
-					}
-				}	
-				
-				// update velocity of This
-				(**it_i).set_xvel(seconds_per_step, x_accel);
-				(**it_i).set_yvel(seconds_per_step, y_accel);	
-	
-				// update position of This, and display
-				(**it_i).step(seconds_per_step);
-				window.draw(**it_i);
-				window.draw(elapsed_time);
-				std::cout << (**it_i) << std::endl << std::endl;
-			}
+					// calculate acceleration of This
+					x_accel = x_force / m1;
+					y_accel = y_force / m1;
+				}
+			}	
+			
+			// update velocity of This
+			(**it_i).set_xvel(seconds_per_step, x_accel);
+			(**it_i).set_yvel(seconds_per_step, y_accel);	
+
+			// update position of This, and display
+			(**it_i).step(seconds_per_step);
+			window.draw(**it_i);
+			window.draw(elapsed_time);
+			std::cout << (**it_i) << std::endl << std::endl;
 		}
 
 		window.display();
