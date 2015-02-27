@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -70,15 +71,63 @@ int main(int argc, char* argv[])
 	sf::RenderWindow window(sf::VideoMode(window_size, window_size), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
 
+	sf::SoundBuffer buffer;
+	buffer.loadFromFile("nbody/2001.ogg");
+	sf::Sound sound;
+	sound.setBuffer(buffer);
+	sound.play();
+
 	sf::Font font;
 	font.loadFromFile("Ubuntu-Light.ttf");
-	sf::Text elapsed_time;
-	elapsed_time.setFont(font);
+	int sec = 0;
+	int min = 0;
+	int days = 0;
+	int weeks = 0;
+	int years = 0;
+
+	sf::Text title_time_seconds("Seconds: ", font);
+	title_time_seconds.setPosition(10, 0);
+	title_time_seconds.setCharacterSize(18);
+	sf::Text time_seconds;
+	time_seconds.setFont(font);
+	time_seconds.setPosition(window_size*0.25, 0);
+	time_seconds.setCharacterSize(18);
+
+	sf::Text title_time_minutes("Minutes: ", font);
+	title_time_minutes.setPosition(10, 20);
+	title_time_minutes.setCharacterSize(18);
+	sf::Text time_minutes;
+	time_minutes.setFont(font);
+	time_minutes.setPosition(window_size*0.25, 20);
+	time_minutes.setCharacterSize(18);
+
+	sf::Text title_time_days("Days: ", font);
+	title_time_days.setPosition(10, 40);
+	title_time_days.setCharacterSize(18);
+	sf::Text time_days;
+	time_days.setFont(font);
+	time_days.setPosition(window_size*0.25, 40);
+	time_days.setCharacterSize(18);
 	
-	for (int t = 0; t < total_time; t += seconds_per_step)
+	sf::Text title_time_weeks("Weeks: ", font);
+	title_time_weeks.setPosition(10, 60);
+	title_time_weeks.setCharacterSize(18);
+	sf::Text time_weeks;
+	time_weeks.setFont(font);
+	time_weeks.setPosition(window_size*0.25, 60);
+	time_weeks.setCharacterSize(18);
+
+	sf::Text title_time_years("Years: ", font);
+	title_time_years.setPosition(10, 80);
+	title_time_years.setCharacterSize(18);
+	sf::Text time_years;
+	time_years.setFont(font);
+	time_years.setPosition(window_size*0.25, 80);
+	time_years.setCharacterSize(18);
+	
+	for (sec = 0; sec < total_time; sec += seconds_per_step)
 	{
 		sf::Event event;
-
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
@@ -92,11 +141,35 @@ int main(int argc, char* argv[])
 		else
 			window.clear(sf::Color::Black);
 
-			// elapsed time
-	//		std::ostringstream string_stream;
-	//		string_stream << t;
-	//		std::string time = string_stream.str();
-	//		elapsed_time.setString(time);
+		// elapsed time
+		std::ostringstream string_stream_sec;
+		string_stream_sec << sec;
+		std::string time_string_sec = string_stream_sec.str();
+		time_seconds.setString(time_string_sec);
+
+		min = sec / 60;
+		std::ostringstream string_stream_minutes;
+		string_stream_minutes << min;
+		std::string time_string_minutes = string_stream_minutes.str();
+		time_minutes.setString(time_string_minutes);
+	
+		days = min / 60 / 24;
+		std::ostringstream string_stream_days;
+		string_stream_days << days;
+		std::string time_string_days = string_stream_days.str();
+		time_days.setString(time_string_days);
+	
+		weeks = days / 7;
+		std::ostringstream string_stream_weeks;
+		string_stream_weeks << weeks;
+		std::string time_string_weeks = string_stream_weeks.str();
+		time_weeks.setString(time_string_weeks);
+	
+		years = weeks / 52;
+		std::ostringstream string_stream_years;
+		string_stream_years << years;
+		std::string time_string_years = string_stream_years.str();
+		time_years.setString(time_string_years);
 			
 		// This body
 		std::vector<Body*>::iterator it_i;
@@ -139,8 +212,16 @@ int main(int argc, char* argv[])
 			// update position of This, and display
 			(**it_i).step(seconds_per_step);
 			window.draw(**it_i);
-			window.draw(elapsed_time);
-//			std::cout << (**it_i) << std::endl << std::endl;
+			window.draw(title_time_seconds);
+			window.draw(time_seconds);
+			window.draw(title_time_minutes);
+			window.draw(time_minutes);
+			window.draw(title_time_days);
+			window.draw(time_days);
+			window.draw(title_time_weeks);
+			window.draw(time_weeks);
+			window.draw(title_time_years);
+			window.draw(time_years);
 		}
 
 		window.display();

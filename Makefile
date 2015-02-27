@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -ansi -pedantic -g
 all: NBody
 
 NBody: NBody.o Body.o
-	$(CC) $(CFLAGS) -o NBody NBody.o Body.o -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $(CFLAGS) -o NBody NBody.o Body.o -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
 Nbody: Nbody.o Body.o
 	$(CC) $(CFLAGS) -o NBody NBody.o Body.o -lsfml-system -lsfml-window -lsfml-graphics
