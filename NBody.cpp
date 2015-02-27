@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 	sound.play();
 
 	sf::Font font;
-	font.loadFromFile("Ubuntu-Light.ttf");
+	font.loadFromFile("nbody/Ubuntu-Light.ttf");
 	int sec = 0;
 	int min = 0;
 	int days = 0;
