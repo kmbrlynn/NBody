@@ -14,7 +14,9 @@ Body::Body(double univ_radius, int window_size) :
 	// _xpos, _ypos, _xvel, _yvel, _mass, _filename
 	std::cin >> *this;
 
-	_texture.loadFromFile(_filename);
+	std::string image_file = "nbody/" + _filename;
+
+	_texture.loadFromFile(image_file);
 	_sprite.setTexture(_texture);
 
 	_body_count++;

@@ -29,14 +29,14 @@ int main(int argc, char* argv[])
 	// ============================================ if background image exists, load it
 	try
 	{
-		background_image.loadFromFile("starfield.jpg");
+		background_image.loadFromFile("nbody/starfield.jpg");
 		background.setTexture(background_image);
 		
 		background_file_exists = true;
 		background_size = background_image.getSize();
 		window_size = (int)background_size.x;
 
-		if (!background_image.loadFromFile("starfield.jpg"))
+		if (!background_image.loadFromFile("nbody/starfield.jpg"))
 			throw CannotLoadBackgroundImage();		
 	}
 	catch (CannotLoadBackgroundImage e)
