@@ -1,12 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <cmath>
 #include <iostream>
 #include <cstdlib>
 #include "Body.hpp"
 
-const int DEFAULT_WINDOW_SIZE = 912;
+const int DEFAULT_WINDOW_SIZE = 512;
 const double G = 6.76e-11;
 
 int main(int argc, char* argv[])
@@ -68,6 +69,11 @@ int main(int argc, char* argv[])
 	sf::RenderWindow window(sf::VideoMode(window_size, window_size), "N-Body Simulation");
 	window.setPosition(sf::Vector2i(200, 50));
 
+	sf::Font font;
+	font.loadFromFile("Ubuntu-Light.ttf");
+	sf::Text elapsed_time;
+	elapsed_time.setFont(font);
+	
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -87,15 +93,20 @@ int main(int argc, char* argv[])
 
 		for (int t = 0; t < total_time; t += seconds_per_step);
 		{
+			// elapsed time
+	//		std::ostringstream string_stream;
+	//		string_stream << t;
+	//		std::string time = string_stream.str();
+	//		elapsed_time.setString(time);
+			
 			// This body
 			std::vector<Body*>::iterator it_i;
 			for (it_i = bodies.begin(); it_i != bodies.end(); ++it_i)
 			{
-				double m1 = (**it_i).get_mass();
-	
+				// maintain these values for all of the Thats
+				double m1 = (**it_i).get_mass();	
 				double x_force = 0;
 				double y_force = 0;
-
 				double x_accel;
 				double y_accel;
 
@@ -119,24 +130,18 @@ int main(int argc, char* argv[])
 						// calculate acceleration of This
 						x_accel = x_force / m1;
 						y_accel = y_force / m1;
-
-						//calc new veloc and use it
 					}
 				}	
 				
-				// add This's new velocity to its current velocity
+				// update velocity of This
 				(**it_i).set_xvel(seconds_per_step, x_accel);
 				(**it_i).set_yvel(seconds_per_step, y_accel);	
 	
-				// update position of This
+				// update position of This, and display
 				(**it_i).step(seconds_per_step);
 				window.draw(**it_i);
-
-				// for debugging
-				std::cout << (**it_i).get_filename() << " new pos =\t";
-				std::cout << (**it_i).get_xpos() << " | " ;
-				std::cout << (**it_i).get_ypos() << std::endl << std::endl;
-
+				window.draw(elapsed_time);
+				std::cout << (**it_i) << std::endl << std::endl;
 			}
 		}
 
