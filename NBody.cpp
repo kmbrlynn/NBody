@@ -50,8 +50,9 @@ int main(int argc, char* argv[])
 	}
 	
 	// ========================================================== create bodies from file
+	std::cout << std::endl << std::endl <<  "INITIAL STATE OF UNIVERSE:" << std::endl;
 	std::cin >> n_bodies;
-	std::cout << std::endl << "Number of bodies: " << n_bodies << std::endl;
+	std::cout << "Number of bodies: " << n_bodies << std::endl;
 	std::cin >> universe_radius;
 	std::cout << "Universe radius: " << universe_radius << std::endl;
 	std::cout << std::endl;
@@ -139,10 +140,23 @@ int main(int argc, char* argv[])
 			(**it_i).step(seconds_per_step);
 			window.draw(**it_i);
 			window.draw(elapsed_time);
-			std::cout << (**it_i) << std::endl << std::endl;
+//			std::cout << (**it_i) << std::endl << std::endl;
 		}
 
 		window.display();
+	}
+
+	std::cout << std::endl << std::endl << "FINAL STATE OF UNIVERSE:" << std::endl;
+	std::cout << "Number of bodies: " << n_bodies << std::endl;
+	std::cout << "Universe radius: " << universe_radius << std::endl;
+	std::cout << std::endl;
+	std::cout << " ...xpos...  ...ypos...  ...xvel...  ...yvel...  ...mass...  filename";
+	std::cout << std::endl << std::endl;
+
+	for (int i = 0; i < n_bodies; ++i)
+	{	
+		std::cout.precision(4);
+		std::cout << std::scientific << *bodies[i] << std::endl;		
 	}
 
 	return 0;
