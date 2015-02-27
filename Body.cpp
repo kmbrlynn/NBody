@@ -68,14 +68,14 @@ void Body::set_yaccel(sf::Vector2f force)
 	_yaccel = force.y / _mass;
 }
 */
-void Body::set_xvel(double seconds, double xvel, double accel)
+void Body::set_xvel(double seconds, double accel)
 {	
-	_xvel = xvel + (seconds * accel);
+	_xvel = _xvel + (seconds * accel);
 }
 
-void Body::set_yvel(double seconds, double yvel, double accel)
+void Body::set_yvel(double seconds, double accel)
 {
-	_yvel = yvel - (seconds * accel);
+	_yvel = _yvel - (seconds * accel);
 }
 
 /*
