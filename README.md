@@ -1,2 +1,2 @@
 # NBody
-An N-Body Simulation http://www.cs.princeton.edu/courses/archive/fall13/cos126/assignments/nbody.html
+An N-Body Simulation. Models a 2D universe given initial positions, velocities, and masses of n bodies.
